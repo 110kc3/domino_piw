@@ -36,6 +36,9 @@ STATS = regionprops(L, 'all'); % we need 'BoundingBox' and 'Extent'
 % Circle = 1 = (1 + 0) = (X=Y , Extent < 1)
 % UNKNOWN = 0
 
+
+
+imshow(STATS(3).ConvexImage)
 figure,
 imshow(RGB),
 title('Results');
@@ -49,7 +52,6 @@ is_line = 0;
 %bounding box defined for each shapes as [x_cordinate,y_cordinate,x_width,y_width]
 for i = 1 : length(STATS)
     centroid = STATS(i).Centroid;
-
    if((STATS(i).BoundingBox(3)~=STATS(i).BoundingBox(4)) && (STATS(i).Extent<1))
         if(~is_line)
             circles_1= circles_1 +1;
@@ -59,7 +61,6 @@ for i = 1 : length(STATS)
 
         plot(centroid(1),centroid(2),'w+');
         text(centroid(1),centroid(2),num2str(i),'Color','y');
-   
     %for squares, we have x_width = y_width,extent =1,
 %     if((STATS(i).BoundingBox(3)==STATS(i).BoundingBox(4)) && (STATS(i).Extent==1))
 %         plot(centroid(1),centroid(2),'wS');
@@ -71,7 +72,7 @@ for i = 1 : length(STATS)
         text(centroid(1),centroid(2),num2str(i),'Color','y');
     
     %for rectangles, we have x_width != y_width,extent =1
-    elseif((STATS(i).BoundingBox(3)~=STATS(i).BoundingBox(4)) && (STATS(i).Extent==1))
+    elseif((STATS(i).BoundingBox(3)~=STATS(i).BoundingBox(4)) && (STATS(i).Extent>=0.9))
         is_line = is_line + 1;
         plot(centroid(1),centroid(2),'wX');
         text(centroid(1),centroid(2),num2str(i),'Color','y');

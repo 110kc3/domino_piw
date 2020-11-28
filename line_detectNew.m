@@ -1,7 +1,7 @@
 clear all 
 clc 
 close all
-RGB = imread('domino_10.jpg');
+RGB = imread('domino_4.jpg');
 figure,
 imshow(RGB),
 title('Original Image');
@@ -38,7 +38,7 @@ STATS = regionprops(L, 'all'); % we need 'BoundingBox' and 'Extent'
 
 
 
-% imshow(STATS(12).ConvexImage)
+
 figure,
 imshow(RGB),
 title('Results');
@@ -56,21 +56,46 @@ for i = 1 : length(STATS)
     if(((STATS(i).BoundingBox(3)~=STATS(i).BoundingBox(4)) && (STATS(i).Extent>=0.9)) || (STATS(i).MajorAxisLength>4*STATS(i).MinorAxisLength))
         is_line = is_line + 1;
         lineSTAT = STATS(i);
+        imshow(STATS(i).ConvexImage)
+        centroid = STATS(i).Centroid;
+        plot(centroid(1),centroid(2),'w+');
+        text(centroid(1),centroid(2),num2str(i),'Color','y');
     end
     
 end
 
+vertical=0;
+a = tand(lineSTAT.Orientation);
+if (lineSTAT.Orientation>=88)
+    vertical=1
+end
+a=a*(-1)
+b = lineSTAT.Centroid(2) - (a*lineSTAT.Centroid(1))
+
+x=0:1:length(BW)-1;
+
+y=a*x+b;
+plot(x,y)
 
 if (isstruct(lineSTAT))
     for i = 1 : length(STATS)
         centroid = STATS(i).Centroid;
        if(STATS(i).Circularity>=0.76 && STATS(i).Circularity<= 1.1 )
-            if(STATS(i).BoundingBox(2)<lineSTAT.BoundingBox(2))
-                circles_1= circles_1 +1;
+%             if(STATS(i).BoundingBox(2)<lineSTAT.BoundingBox(2))
+            % < bo oś y na obrazku zaczyna się od góry
+            if(vertical)
+                if(STATS(i).Centroid(1)<(lineSTAT.Centroid(1)))
+                    circles_1= circles_1 +1;
+                else
+                    circles_2 = circles_2 +1;
+                end
             else
-                circles_2 = circles_2 +1;
+                if(STATS(i).Centroid(2)<(a*STATS(i).Centroid(1)+b))
+                    circles_1= circles_1 +1;
+                else
+                    circles_2 = circles_2 +1;
+                end
             end
-
             plot(centroid(1),centroid(2),'w+');
             text(centroid(1),centroid(2),num2str(i),'Color','y');
 
@@ -88,3 +113,6 @@ if (isstruct(lineSTAT))
 
     end
 end
+
+
+title("Część górna: " + circles_1 + " część dolna: " +  circles_2);

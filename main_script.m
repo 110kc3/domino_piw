@@ -2,7 +2,7 @@ clear all
 clc 
 close all
 %RGB = imread('domino_4.jpg');
-[fn,pn]=uigetfile({'*.png'}, 'Wybierz obraz');
+[fn,pn]=uigetfile({'*.jpg'}, 'Wybierz obraz');
 RGB = imread([pn,fn]);
 figure,
 imshow(RGB),
@@ -92,4 +92,4 @@ if (isstruct(lineSTAT))
 end
 
 
-title("Czêœæ górna: " + circles_1 + " czêœæ dolna: " +  circles_2);
+title("Czesc górna: " + circles_1 + " czesc dolna: " +  circles_2);

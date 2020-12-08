@@ -6,4 +6,4 @@ Sample output:
 
 
 
-![alt text](https://github.com/110kc3/domino_piw/blob/main/untitledPerfecto.png?raw=true)
+![alt text](https://github.com/110kc3/domino_piw/blob/main/sampleOutput/untitledPerfecto.png?raw=true)
